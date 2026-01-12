@@ -6,15 +6,13 @@ terraform {
       version = "6.26.0"
     }
   }
-}
+
 
 provider "aws" {
   region = "eu-west-1"
 }
 
-#################################
-
-terraform {
+################################terraform {
   backend "s3" {
     bucket         = "jenkins-bucxx"
     key            = "terraform.tfstate"
@@ -22,7 +20,6 @@ terraform {
     encrypt        = true
   }
 }
-
 
 
 data "aws_vpc" "default" { // Fetch default VPC
