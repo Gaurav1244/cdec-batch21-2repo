@@ -9,16 +9,16 @@ terraform {
   }
 
   backend "s3" {
-    bucket  = "jenkins-bucxx"
+    bucket  = "my-simple-tfstate-bucket-12345"
     key     = "terraform.tfstate"
-    region  = "eu-west-1"
+    region  = "ap-south-1"
     encrypt = true
   }
 }
 
 # 👇 provider MUST be OUTSIDE terraform block
 provider "aws" {
-  region = "eu-west-1"
+  region = "ap-south-1"
 }
 
 #################################
