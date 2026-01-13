@@ -16,20 +16,20 @@ terraform {
   }
 }
 
-# 👇 provider MUST be OUTSIDE terraform block
+#################################
+# AWS PROVIDER
+#################################
+
 provider "aws" {
   region = "ap-south-1"
 }
 
 #################################
+# DATA SOURCES
+#################################
 
 data "aws_vpc" "default" {
   default = true
-}
-
-variable "cluster_name" {
-  type    = string
-  default = "my-cluster-19"
 }
 
 data "aws_subnets" "default" {
@@ -40,18 +40,29 @@ data "aws_subnets" "default" {
 }
 
 #################################
+# VARIABLES
+#################################
+
+variable "cluster_name" {
+  type    = string
+  default = "my-cluster-19"
+}
+
+#################################
 # IAM ROLE FOR EKS CLUSTER
 #################################
 
 resource "aws_iam_role" "eks_cluster_role" {
-  name = "eks-cluster-role"
+  name = "eks-cluster-role-${var.cluster_name}"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
       Effect    = "Allow"
-      Principal = { Service = "eks.amazonaws.com" }
-      Action    = "sts:AssumeRole"
+      Principal = {
+        Service = "eks.amazonaws.com"
+      }
+      Action = "sts:AssumeRole"
     }]
   })
 }
@@ -66,14 +77,16 @@ resource "aws_iam_role_policy_attachment" "eks_cluster_policy" {
 #################################
 
 resource "aws_iam_role" "node_role" {
-  name = "eks-node-role"
+  name = "eks-node-role-${var.cluster_name}"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
       Effect    = "Allow"
-      Principal = { Service = "ec2.amazonaws.com" }
-      Action    = "sts:AssumeRole"
+      Principal = {
+        Service = "ec2.amazonaws.com"
+      }
+      Action = "sts:AssumeRole"
     }]
   })
 }
