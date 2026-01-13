@@ -5,7 +5,7 @@ pipeline {
 
         stage('PULL') {
             steps {
-                   git 'https://github.com/chetanraval07/cdec-batch21-repo2.git'
+                   git 'https://github.com/Gaurav1244/cdec-batch21-2repo.git'
             }
         }
 
